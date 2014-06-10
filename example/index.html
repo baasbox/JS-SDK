@@ -1,0 +1,159 @@
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>index</title>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>	
+	<script src="../lib/jquery.cookie.js"></script>
+	<script src="../baasbox.js"></script>
+		
+	<script type="text/javascript" charset="utf-8">
+	
+	$( document ).ready(function() {
+		
+		BaasBox.setEndPoint("http://localhost:9000");
+		BaasBox.appcode = "1234567890";
+	
+		$("#login").click(function() {
+
+			BaasBox.login("ciao", "ciao", function (res, error) {
+				if (res)
+					console.log("res is ", res);
+				else
+					console.log("err is ", error);
+			});
+			
+		});
+	
+		$("#loadCatalogue").click(function() {
+
+			BaasBox.loadCollection("catalogue", function (res, error) {
+				
+				if (res) {
+					
+					$.each (res, function (i, item) {
+						
+						console.log("item " + item.name);
+						
+					});
+					
+				} else {
+					
+					console.log("err is " + error);
+					
+				}
+				
+			});
+			
+		});
+		
+		$("#loadJSONAsset").click(function() {
+
+			BaasBox.loadAssetData("test", function (res, error) {
+				
+				if (res) {
+					console.log("res is " + res);
+				} else {
+					console.log("err is " + error);
+				}
+				
+			});
+			
+		});
+		
+		$("#createUser").click(function() {
+
+			BaasBox.createUser("ciao", "ciao", function (res, error) {
+				
+				if (res)
+					console.log("res is ", res);
+				else
+					console.log("err is ", error);
+				
+			});
+			
+		});
+		
+		$("#loadImage").click(function () {
+			
+			BaasBox.getImageURI("inoutledlig", {'resizeId' : 1}, function (data, error) {
+				
+				if (data) {
+					console.log("data " , data);
+				} else {
+					console.log("error " , error);
+				}
+				
+			});
+			
+		});
+		
+		$("#logout").click(function () {
+			
+			BaasBox.logout(function (res, err) {
+				if (res)
+					console.log("res ", res);
+				else 
+					console.log("error ", err);
+			});
+			
+		});
+		
+		$("#save").click(function () {
+			
+			var o = new Object();
+			o.list = ["margherita", "capricciosa"];
+			o.address = "Via delle vie 14";
+			o.id = "fffbb568-3de4-4f4a-af3a-043fb4a431d9";
+						
+			BaasBox.save(o, "orders", function (res, err) {
+				if (res)
+					console.log("res ", res);
+				else 
+					console.log("error is ", err);
+			});
+			
+		});
+		
+		$("#update").click(function () {
+			
+			objectId = "fffbb568-3de4-4f4a-af3a-043fb4a431d9";
+						
+			BaasBox.updateField(objectId, "orders", "address", "nuovo indirizzo", function (res, err) {
+				if (res)
+					console.log("res ", res);
+				else 
+					console.log("error is ", err);
+			});
+			
+		});
+		
+		$("#delete").click(function () {
+			
+			objectId = "e1f8110a-e458-4a75-acbb-da28721e84e8";
+						
+			BaasBox.delete(objectId, "orders", function (res, err) {
+				if (res)
+					console.log("res ", res);
+				else 
+					console.log("error is ", err);
+			});
+			
+		});
+		
+	});
+		
+	</script>
+	
+</head>
+<body>
+	<a id="login" href="#">login</a> <br>
+	<a id="createUser" href="#">singup(ciao,ciao)</a><br>
+	<a id="loadCatalogue" href="#">load catalogue</a> <br>
+	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
+	<a id="loadImage" href="#">loadImage</a><br>
+	<a id="logout" href="#">logout</a><br>
+	<a id="save" href="#">save</a><br>
+	<a id="update" href="#">update</a><br>
+	<a id="delete" href="#">delete</a>
+</body>
+</htm>
