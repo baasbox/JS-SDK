@@ -21,3 +21,7 @@ Version 0.3
 Version 0.3.5
 
 - Added support to save/update/delete and updateField
+
+Version 0.3.6
+
+- Added support to Zepto and all permission
