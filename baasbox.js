@@ -199,7 +199,7 @@ var BaasBox = (function() {
 
         appcode: "",
         pagelength: 50,
-        version: "0.3.6",
+        version: "0.3.7",
 
         getInstance: function() {
             if (!instance) {
