@@ -128,6 +128,7 @@ var BaasBox = (function() {
     var READ_PERMISSION = "read";
     var DELETE_PERMISSION = "delete";
     var UPDATE_PERMISSION = "update";
+	var ALL_PERMISSION = "all";
 
     // role constants, by default in the BaasBox back end
     var ANONYMOUS_ROLE = "anonymous";
