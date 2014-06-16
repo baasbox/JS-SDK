@@ -16,10 +16,12 @@
 		$("#login").click(function() {
 
 			BaasBox.login("ciao", "ciao", function (res, error) {
-				if (res)
+				if (res) {
 					console.log("res is ", res);
-				else
+				}
+				else {
 					console.log("err is ", error);
+				}
 			});
 			
 		});
@@ -64,10 +66,12 @@
 
 			BaasBox.createUser("ciao", "ciao", function (res, error) {
 				
-				if (res)
+				if (res) {
 					console.log("res is ", res);
-				else
+				}
+				else {
 					console.log("err is ", error);
+				}
 				
 			});
 			
@@ -90,10 +94,12 @@
 		$("#logout").click(function () {
 			
 			BaasBox.logout(function (res, err) {
-				if (res)
+				if (res) {
 					console.log("res ", res);
-				else 
+				}
+				else {
 					console.log("error ", err);
+				}
 			});
 			
 		});
@@ -102,40 +108,45 @@
 			
 			var o = new Object();
 			o.list = ["margherita", "capricciosa"];
-			o.address = "Via delle vie 14";
-			o.id = "fffbb568-3de4-4f4a-af3a-043fb4a431d9";
+			o.address = "Prince Street 100, New York, NY";
 						
 			BaasBox.save(o, "orders", function (res, err) {
-				if (res)
+				if (res) {
 					console.log("res ", res);
-				else 
+				}
+				else {
 					console.log("error is ", err);
+				}
 			});
 			
 		});
 		
 		$("#update").click(function () {
 			
-			objectId = "fffbb568-3de4-4f4a-af3a-043fb4a431d9";
+			objectId = "0670c590-ae0e-41b6-941e-2080f8e1a130";
 						
-			BaasBox.updateField(objectId, "orders", "address", "nuovo indirizzo", function (res, err) {
-				if (res)
+			BaasBox.updateField(objectId, "orders", "address", "new address", function (res, err) {
+				if (res) {
 					console.log("res ", res);
-				else 
+				}
+				else {
 					console.log("error is ", err);
+				}
 			});
 			
 		});
 		
 		$("#delete").click(function () {
 			
-			objectId = "e1f8110a-e458-4a75-acbb-da28721e84e8";
+			objectId = "0670c590-ae0e-41b6-941e-2080f8e1a130";
 						
 			BaasBox.delete(objectId, "orders", function (res, err) {
-				if (res)
+				if (res) {
 					console.log("res ", res);
-				else 
+				}
+				else {
 					console.log("error is ", err);
+				}
 			});
 			
 		});
