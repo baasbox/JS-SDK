@@ -25,3 +25,8 @@ Version 0.3.5
 Version 0.3.6
 
 - Added support to Zepto and all permission
+
+Version 0.8.1
+
+- Just a release number update to align this SDK with the other ones
+
