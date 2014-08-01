@@ -115,8 +115,6 @@
 
 }));
 
-
-
 var BaasBox = (function() {
 
     var instance;
@@ -137,23 +135,23 @@ var BaasBox = (function() {
 
     // check if the user is using Zepto, otherwise the standard jQuery ajaxSetup function is executed
     if (window.Zepto) {
-        $.ajaxSettings.global = true;
-        $.ajaxSettings.beforeSend = function(r, settings) {
-            if (BaasBox.getCurrentUser()) {
-                r.setRequestHeader('X-BB-SESSION', BaasBox.getCurrentUser().token);
-            }
-            r.setRequestHeader('X-BAASBOX-APPCODE', BaasBox.appcode);
-        };
+      $.ajaxSettings.global = true;
+      $.ajaxSettings.beforeSend = function(r, settings) {
+      if (BaasBox.getCurrentUser()) {
+        r.setRequestHeader('X-BB-SESSION', BaasBox.getCurrentUser().token);
+      }
+        r.setRequestHeader('X-BAASBOX-APPCODE', BaasBox.appcode);
+      };
     } else {
-        $.ajaxSetup({
-            global: true,
-            beforeSend: function(r, settings) {
-                if (BaasBox.getCurrentUser()) {
-                    r.setRequestHeader('X-BB-SESSION', BaasBox.getCurrentUser().token);
-                }
-                r.setRequestHeader('X-BAASBOX-APPCODE', BaasBox.appcode);
-            }
-        });
+      $.ajaxSetup({
+         global: true,
+         beforeSend: function(r, settings) {
+           if (BaasBox.getCurrentUser()) {
+             r.setRequestHeader('X-BB-SESSION', BaasBox.getCurrentUser().token);
+           }
+           r.setRequestHeader('X-BAASBOX-APPCODE', BaasBox.appcode);
+         }
+      });
     }
 
     function createInstance() {
@@ -163,288 +161,294 @@ var BaasBox = (function() {
 
     function setCurrentUser(userObject) {
       if (userObject === null) {
-          return;
+        return;
       }
       this.user = userObject;
       // if the user is using Zepto, then local storage must be used (if supported by the current browser)
       if (window.Zepto && window.localStorage) {
-              window.localStorage.setItem(COOKIE_KEY, JSON.stringify(this.user));
+        window.localStorage.setItem(COOKIE_KEY, JSON.stringify(this.user));
       } else {
-          $.cookie(COOKIE_KEY, JSON.stringify(this.user));
+        $.cookie(COOKIE_KEY, JSON.stringify(this.user));
       }
     }
 
     function getCurrentUser() {
-        // if the user is using Zepto, then local storage must be used (if supported by the current browser)
-        if (window.Zepto && window.localStorage) {
-            if (localStorage.getItem(COOKIE_KEY)) {
-                this.user = JSON.parse(localStorage.getItem(COOKIE_KEY));
-            }
-        } else {
-            if ($.cookie(COOKIE_KEY)) {
-                this.user = JSON.parse($.cookie(COOKIE_KEY));
-            }
+      // if the user is using Zepto, then local storage must be used (if supported by the current browser)
+      if (window.Zepto && window.localStorage) {
+        if (localStorage.getItem(COOKIE_KEY)) {
+          this.user = JSON.parse(localStorage.getItem(COOKIE_KEY));
         }
-        return this.user;
+      } else {
+        if ($.cookie(COOKIE_KEY)) {
+          this.user = JSON.parse($.cookie(COOKIE_KEY));
+        }
+      }
+      return this.user;
     }
 
     function buildDeferred() {
-        var dfd = new $.Deferred();
-        var promise = {};   
-        promise.success = function(fn) {
-            promise.then(function(data) {
-                fn(data);
-            });
-            return promise;
-        };
-         promise.error = function(fn) {
-            promise.then(null, function(error) {
-                fn(error);
-            });
-            return promise;
-        };
+      var dfd = new $.Deferred();
+      var promise = {};   
+      promise.success = function(fn) {
+        promise.then(function(data) {
+          fn(data);
+        });
+        return promise;
+      };
+      promise.error = function(fn) {
+        promise.then(null, function(error) {
+          fn(error);
+        });
+        return promise;
+      };
 
-        dfd.promise(promise)
-        return dfd;
+      dfd.promise(promise)
+      return dfd;
     }
 
     return {
-        appcode: "",
-        pagelength: 50,
-        timeout: 20000,
-        version: "0.8.2",
+      appcode: "",
+      pagelength: 50,
+      timeout: 20000,
+      version: "0.8.2",
 
-        isEmpty: function(ob) {
-            for (var i in ob) {
-                return false;
-            }
-            return true;
-        },
+      isEmpty: function(ob) {
+          for (var i in ob) {
+            return false;
+          }
+          return true;
+      },
 
-        getInstance: function() {
-            if (!instance) {
-                instance = createInstance();
-            }
-            return instance;
-        },
-
-        setEndPoint: function(endPointURL) {
-            var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-            if (regexp.test(endPointURL)) {
-                this.endPoint = endPointURL;
-            } else {
-                alert(endPointURL + " is not a valid URL");
-            }
-        },
-
-        endPoint: function() {
-            return this.endPoint;
-        },
-
-        login: function(user, pass) {
-            var deferred = buildDeferred();
-            var url = BaasBox.endPoint + '/login';
-            var loginRequest = $.post(url, {
-              username: user,
-              password: pass,
-              appcode: BaasBox.appcode
-            })
-            .done(function(res) {
-              var roles = [];
-              $(res.data.user.roles).each(function(idx, r) {
-                  roles.push(r.name);
-              });
-              setCurrentUser({
-                  "username": res.data.user.name,
-                  "token": res.data['X-BB-SESSION'],
-                  "roles": roles
-              });
-              //TODO: parse visibleBy*
-              deferred.resolve(getCurrentUser());
-            })
-            .fail(function(error) {
-              deferred.reject(error)
-            });
-            return deferred.promise();
-        },
-
-        logout: function(cb) {
-            var deferred = buildDeferred();
-            var u = getCurrentUser();
-            if (u === null) {
-                return deferred.reject({"data" : "ok", "message" : "User already logged out"})
-            }
-            var url = BaasBox.endPoint + '/logout';
-            var req = $.post(url, {})
-              .done(function (res) {
-                if(window.Zepto && window.localStorage) {
-                    window.localStorage.removeItem(COOKIE_KEY);
-                } else {
-                    $.cookie(COOKIE_KEY, null);
-                }
-                setCurrentUser(null);
-                deferred.resolve({"data": "ok","message": "User logged out"})
-              .fail(function (error) {
-                  deferred.reject(error)
-               })
-            });
-            return deferred.promise();
-        },
-
-        signup: function(user, pass, cb) {
-            var deferred = buildDeferred();
-            var url = BaasBox.endPoint + '/user';
-            var req = $.ajax({
-                url: url,
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({username: user, password: pass})
-            })
-              .done(function (res) {
-                  var roles = [];
-                  $(res.data.user.roles).each(function(idx, r) {
-                      roles.push(r.name);
-                  });
-                  setCurrentUser({
-                      "username": res.data.user.name,
-                      "token": res.data['X-BB-SESSION'],
-                      "roles": roles
-                  });
-                  //TODO: parse visibleBy*
-                  deferred.resolve(getCurrentUser());
-              })
-              .fail(function(error) {
-                deferred.reject(error)
-              })
-            return deferred.promise();
-        },
-
-        getCurrentUser: function() {
-            return getCurrentUser();
-        },
-
-        loadCollectionWithParams: function(collection, params) {
-            var deferred = buildDeferred();
-            var url = BaasBox.endPoint + '/document/' + collection;
-            var req = $.ajax({
-                url: url,
-                method: 'GET',
-                timeout: BaasBox.timeout,
-                dataType: 'json',
-                data: params
-            })
-              .done(function(res) {
-                deferred.resolve(res['data']);
-              })
-              .fail(function(error) {
-                deferred.reject(error);
-              })
-            return deferred.promise();
-        },
-
-        loadCollection: function(collection) {
-            return BaasBox.loadCollectionWithParams(collection, {page: 0, recordsPerPage: BaasBox.pagelength});
-        },
-
-        save: function(object, collection) {
-            var deferred = buildDeferred();
-            var method = 'POST';
-            var url = BaasBox.endPoint + '/document/' + collection;
-            if (object.id) {
-                method = 'PUT';
-                url = BaasBox.endPoint + '/document/' + collection + '/' + object.id;
-            }
-            json = JSON.stringify(object);
-            var req = $.ajax({
-                url: url,
-                type: method,
-                contentType: 'application/json',
-                dataType: 'json',
-                data: json
-            })
-              .done(function(res) {
-                deferred.resolve(res['data']);
-              })
-              .fail(function(error) {
-                deferred.reject(error);
-              })
-            return deferred.promise();
-        },
-
-        updateField: function(objectId, collection, fieldName, newValue) {
-            var deferred = buildDeferred();
-            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/.' + fieldName;
-            var json = JSON.stringify({
-                "data": newValue
-            });
-            var req = $.ajax({
-                url: url,
-                type: 'PUT',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: json
-            })
-              .done(function(res) {
-                deferred.resolve(res['data']);
-              })
-              .fail(function(error) {
-                deferred.reject(error);
-              })
-            return deferred.promise();
-        },
-
-        delete: function(objectId, collection) {
-            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
-            return $.ajax({
-                url: url,
-                method: 'DELETE'
-            })
-        },
-
-        // only for json assets
-        loadAssetData: function(assetName) {
-            var deferred = buildDeferred();
-            var url = BaasBox.endPoint + '/asset/' + assetName + '/data';
-            var req = $.ajax({
-                url: url,
-                method: 'GET',
-                contentType: 'application/json',
-                dataType: 'json'
-            })
-              .done(function(res) {
-                deferred.resolve(res['data']);
-              })
-              .fail(function(error) {
-                deferred.reject(error);
-              })
-            return deferred.promise();
-        },
-
-        getImageURI: function(name, params) {
-            var deferred = buildDeferred();
-            var uri = BaasBox.endPoint + '/asset/' + name;
-            var r;
-            if (params === null || this.isEmpty(params)) {
-              return deferred.resolve({"data": uri + "?X-BAASBOX-APPCODE=" + BaasBox.appcode})
-            }
-            for (var prop in params) {
-                var a = [];
-                a.push(prop);
-                a.push(params[prop]);
-                r = a.join('/');
-            }
-            uri = uri.concat('/');
-            uri = uri.concat(r);
-            p = {};
-            p['X-BAASBOX-APPCODE'] = BaasBox.appcode;
-            var req = $.get(uri, p)
-              .done(function(res) {
-                deferred.resolve({"data": this.url});
-              })
-              .fail(function(e) {
-                deferred.reject(error);
-              });
-            return deferred.promise();
+      getInstance: function() {
+        if (!instance) {
+          instance = createInstance();
         }
+        return instance;
+      },
+
+      setEndPoint: function(endPointURL) {
+        var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+        if (regexp.test(endPointURL)) {
+          this.endPoint = endPointURL;
+        } else {
+          alert(endPointURL + " is not a valid URL");
+        }
+      },
+
+      endPoint: function() {
+          return this.endPoint;
+      },
+
+      login: function(user, pass) {
+        var deferred = buildDeferred();
+        var url = BaasBox.endPoint + '/login';
+        var loginRequest = $.post(url, {
+          username: user,
+          password: pass,
+          appcode: BaasBox.appcode
+        })
+        .done(function(res) {
+          var roles = [];
+          $(res.data.user.roles).each(function(idx, r) {
+              roles.push(r.name);
+          });
+          setCurrentUser({
+            "username": res.data.user.name,
+            "token": res.data['X-BB-SESSION'],
+            "roles": roles,
+            "visibleByAnonymousUsers": res.data["visibleByAnonymousUsers"],
+            "visibleByTheUser": res.data["visibleByTheUser"],
+            "visibleByFriends": res.data["visibleByFriends"],
+            "visibleByRegisteredUsers": res.data["visibleByRegisteredUsers"],
+          });
+          deferred.resolve(getCurrentUser());
+        })
+        .fail(function(error) {
+          deferred.reject(error)
+        });
+        return deferred.promise();
+      },
+
+      logout: function(cb) {
+        var deferred = buildDeferred();
+        var u = getCurrentUser();
+        if (u === null) {
+          return deferred.reject({"data" : "ok", "message" : "User already logged out"})
+        }
+        var url = BaasBox.endPoint + '/logout';
+        var req = $.post(url, {})
+          .done(function (res) {
+            if(window.Zepto && window.localStorage) {
+              window.localStorage.removeItem(COOKIE_KEY);
+            } else {
+              $.cookie(COOKIE_KEY, null);
+            }
+            setCurrentUser(null);
+            deferred.resolve({"data": "ok","message": "User logged out"})
+          .fail(function (error) {
+              deferred.reject(error)
+           })
+        });
+        return deferred.promise();
+      },
+
+      signup: function(user, pass) {
+        var deferred = buildDeferred();
+        var url = BaasBox.endPoint + '/user';
+        var req = $.ajax({
+          url: url,
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({username: user, password: pass})
+        })
+          .done(function (res) {
+            var roles = [];
+            $(res.data.user.roles).each(function(idx, r) {
+              roles.push(r.name);
+            });
+            setCurrentUser({
+              "username": res.data.user.name,
+              "token": res.data['X-BB-SESSION'],
+              "roles": roles,
+              "visibleByAnonymousUsers": res.data["visibleByAnonymousUsers"],
+              "visibleByTheUser": res.data["visibleByTheUser"],
+              "visibleByFriends": res.data["visibleByFriends"],
+              "visibleByRegisteredUsers": res.data["visibleByRegisteredUsers"],
+            });
+            deferred.resolve(getCurrentUser());
+          })
+          .fail(function(error) {
+            deferred.reject(error)
+          })
+        return deferred.promise();
+      },
+
+      getCurrentUser: function() {
+          return getCurrentUser();
+      },
+
+      loadCollectionWithParams: function(collection, params) {
+        var deferred = buildDeferred();
+        var url = BaasBox.endPoint + '/document/' + collection;
+        var req = $.ajax({
+            url: url,
+            method: 'GET',
+            timeout: BaasBox.timeout,
+            dataType: 'json',
+            data: params
+        })
+          .done(function(res) {
+            deferred.resolve(res['data']);
+          })
+          .fail(function(error) {
+            deferred.reject(error);
+          })
+        return deferred.promise();
+      },
+
+      loadCollection: function(collection) {
+        return BaasBox.loadCollectionWithParams(collection, {page: 0, recordsPerPage: BaasBox.pagelength});
+      },
+
+      save: function(object, collection) {
+        var deferred = buildDeferred();
+        var method = 'POST';
+        var url = BaasBox.endPoint + '/document/' + collection;
+        if (object.id) {
+          method = 'PUT';
+          url = BaasBox.endPoint + '/document/' + collection + '/' + object.id;
+        }
+        json = JSON.stringify(object);
+        var req = $.ajax({
+          url: url,
+          type: method,
+          contentType: 'application/json',
+          dataType: 'json',
+          data: json
+        })
+          .done(function(res) {
+            deferred.resolve(res['data']);
+          })
+          .fail(function(error) {
+            deferred.reject(error);
+          })
+        return deferred.promise();
+      },
+
+      updateField: function(objectId, collection, fieldName, newValue) {
+        var deferred = buildDeferred();
+        url = BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/.' + fieldName;
+        var json = JSON.stringify({
+            "data": newValue
+        });
+        var req = $.ajax({
+          url: url,
+          type: 'PUT',
+          contentType: 'application/json',
+          dataType: 'json',
+          data: json
+        })
+          .done(function(res) {
+            deferred.resolve(res['data']);
+          })
+          .fail(function(error) {
+            deferred.reject(error);
+          })
+        return deferred.promise();
+      },
+
+      delete: function(objectId, collection) {
+        url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
+        return $.ajax({
+          url: url,
+          method: 'DELETE'
+        })
+      },
+
+      // only for json assets
+      loadAssetData: function(assetName) {
+        var deferred = buildDeferred();
+        var url = BaasBox.endPoint + '/asset/' + assetName + '/data';
+        var req = $.ajax({
+          url: url,
+          method: 'GET',
+          contentType: 'application/json',
+          dataType: 'json'
+        })
+          .done(function(res) {
+            deferred.resolve(res['data']);
+          })
+          .fail(function(error) {
+            deferred.reject(error);
+          })
+        return deferred.promise();
+      },
+
+      getImageURI: function(name, params) {
+        var deferred = buildDeferred();
+        var uri = BaasBox.endPoint + '/asset/' + name;
+        var r;
+        if (params === null || this.isEmpty(params)) {
+          return deferred.resolve({"data": uri + "?X-BAASBOX-APPCODE=" + BaasBox.appcode})
+        }
+        for (var prop in params) {
+          var a = [];
+          a.push(prop);
+          a.push(params[prop]);
+          r = a.join('/');
+        }
+        uri = uri.concat('/');
+        uri = uri.concat(r);
+        p = {};
+        p['X-BAASBOX-APPCODE'] = BaasBox.appcode;
+        var req = $.get(uri, p)
+          .done(function(res) {
+            deferred.resolve({"data": this.url});
+          })
+          .fail(function(e) {
+            deferred.reject(error);
+          });
+        return deferred.promise();
+      }
     };
 })();
