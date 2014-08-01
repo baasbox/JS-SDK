@@ -128,7 +128,7 @@ var BaasBox = (function() {
     var READ_PERMISSION = "read";
     var DELETE_PERMISSION = "delete";
     var UPDATE_PERMISSION = "update";
-	var ALL_PERMISSION = "all";
+	  var ALL_PERMISSION = "all";
 
     // role constants, by default in the BaasBox back end
     var ANONYMOUS_ROLE = "anonymous";
@@ -157,26 +157,21 @@ var BaasBox = (function() {
     }
 
     function createInstance() {
-
-        var object = new Object("I am the BaasBox instance");
-        return object;
-
+      var object = new Object("I am the BaasBox instance");
+      return object;
     }
 
     function setCurrentUser(userObject) {
-
-        if (userObject === null) {
-            return;
-        }
-
-        this.user = userObject;
-
-        // if the user is using Zepto, then local storage must be used (if supported by the current browser)
-        if (window.Zepto && window.localStorage) {
-                window.localStorage.setItem(COOKIE_KEY, JSON.stringify(this.user));
-        } else {
-            $.cookie(COOKIE_KEY, JSON.stringify(this.user));
-        }
+      if (userObject === null) {
+          return;
+      }
+      this.user = userObject;
+      // if the user is using Zepto, then local storage must be used (if supported by the current browser)
+      if (window.Zepto && window.localStorage) {
+              window.localStorage.setItem(COOKIE_KEY, JSON.stringify(this.user));
+      } else {
+          $.cookie(COOKIE_KEY, JSON.stringify(this.user));
+      }
     }
 
     function getCurrentUser() {
@@ -190,16 +185,41 @@ var BaasBox = (function() {
                 this.user = JSON.parse($.cookie(COOKIE_KEY));
             }
         }
-
         return this.user;
+    }
 
+    function buildDeferred() {
+        var dfd = new $.Deferred();
+        var promise = {};   
+        promise.success = function(fn) {
+            promise.then(function(data) {
+                fn(data);
+            });
+            return promise;
+        };
+         promise.error = function(fn) {
+            promise.then(null, function(error) {
+                fn(error);
+            });
+            return promise;
+        };
+
+        dfd.promise(promise)
+        return dfd;
     }
 
     return {
-
         appcode: "",
         pagelength: 50,
-        version: "0.3.7",
+        timeout: 20000,
+        version: "0.8.2",
+
+        isEmpty: function(ob) {
+            for (var i in ob) {
+                return false;
+            }
+            return true;
+        },
 
         getInstance: function() {
             if (!instance) {
@@ -209,299 +229,222 @@ var BaasBox = (function() {
         },
 
         setEndPoint: function(endPointURL) {
-
             var regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-
             if (regexp.test(endPointURL)) {
-
                 this.endPoint = endPointURL;
-
             } else {
-
                 alert(endPointURL + " is not a valid URL");
-
             }
-
         },
 
         endPoint: function() {
             return this.endPoint;
         },
 
-        login: function(user, pass, cb) {
-
+        login: function(user, pass) {
+            var deferred = buildDeferred();
             var url = BaasBox.endPoint + '/login';
-            var req = $.post(url, {
-                    username: user,
-                    password: pass,
-                    appcode: BaasBox.appcode
-                })
-                .done(function(res) {
-                    var roles = [];
-
-                    $(res.data.user.roles).each(function(idx, r) {
-                        roles.push(r.name);
-                    });
-
-                    setCurrentUser({
-                        "username": res.data.user.name,
-                        "token": res.data['X-BB-SESSION'],
-                        "roles": roles
-                    });
-                    var u = getCurrentUser();
-                    console.log("current user " + u);
-                    cb(u, null);
-                })
-                .fail(function(e) {
-                    console.log("error" + e);
-                    cb(null, JSON.parse(e.responseText));
-                });
-
+            var loginRequest = $.post(url, {
+              username: user,
+              password: pass,
+              appcode: BaasBox.appcode
+            })
+            .done(function(res) {
+              var roles = [];
+              $(res.data.user.roles).each(function(idx, r) {
+                  roles.push(r.name);
+              });
+              setCurrentUser({
+                  "username": res.data.user.name,
+                  "token": res.data['X-BB-SESSION'],
+                  "roles": roles
+              });
+              //TODO: parse visibleBy*
+              deferred.resolve(getCurrentUser());
+            })
+            .fail(function(error) {
+              deferred.reject(error)
+            });
+            return deferred.promise();
         },
 
         logout: function(cb) {
-
+            var deferred = buildDeferred();
             var u = getCurrentUser();
             if (u === null) {
-
-                cb({
-                    "data": "ok",
-                    "message": "User already logged out"
-                }, null);
-                return;
+                return deferred.reject({"data" : "ok", "message" : "User already logged out"})
             }
-
             var url = BaasBox.endPoint + '/logout';
-
-            var req = $.ajax({
-                url: url,
-                method: 'POST',
-                success: function(res) {
-                    // if the user is using Zepto, then local storage must be used (if supported by the current browser)
-                    if(window.Zepto && window.localStorage) {
-                        window.localStorage.removeItem(COOKIE_KEY);
-                    } else {
-                        $.cookie(COOKIE_KEY, null);
-                    }
-                    setCurrentUser(null);
-                    cb({
-                        "data": "ok",
-                        "message": "User logged out"
-                    }, null);
-                },
-                error: function(e) {
-                    cb(null, JSON.parse(e.responseText));
+            var req = $.post(url, {})
+              .done(function (res) {
+                if(window.Zepto && window.localStorage) {
+                    window.localStorage.removeItem(COOKIE_KEY);
+                } else {
+                    $.cookie(COOKIE_KEY, null);
                 }
+                setCurrentUser(null);
+                deferred.resolve({"data": "ok","message": "User logged out"})
+              .fail(function (error) {
+                  deferred.reject(error)
+               })
             });
+            return deferred.promise();
         },
 
-        createUser: function(user, pass, cb) {
-
+        signup: function(user, pass, cb) {
+            var deferred = buildDeferred();
             var url = BaasBox.endPoint + '/user';
-
             var req = $.ajax({
                 url: url,
                 method: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify({
-                    username: user,
-                    password: pass
-                }),
-                success: function(res) {
-
-                    var roles = [];
-
-                    $(res.data.user.roles).each(function(idx, r) {
-                        roles.push(r.name);
-                    });
-
-                    setCurrentUser({
-                        "username": res.data.user.name,
-                        "token": res.data['X-BB-SESSION'],
-                        "roles": roles
-                    });
-
-                    var u = getCurrentUser();
-                    cb(u, null);
-                },
-                error: function(e) {
-                    cb(null, JSON.parse(e.responseText));
-                }
-            });
-
+                data: JSON.stringify({username: user, password: pass})
+            })
+              .done(function (res) {
+                  var roles = [];
+                  $(res.data.user.roles).each(function(idx, r) {
+                      roles.push(r.name);
+                  });
+                  setCurrentUser({
+                      "username": res.data.user.name,
+                      "token": res.data['X-BB-SESSION'],
+                      "roles": roles
+                  });
+                  //TODO: parse visibleBy*
+                  deferred.resolve(getCurrentUser());
+              })
+              .fail(function(error) {
+                deferred.reject(error)
+              })
+            return deferred.promise();
         },
 
         getCurrentUser: function() {
             return getCurrentUser();
         },
 
-        loadCollectionWithParams: function(collection, params, callback) {
-
-            console.log("loading collection " + collection);
-
+        loadCollectionWithParams: function(collection, params) {
+            var deferred = buildDeferred();
             var url = BaasBox.endPoint + '/document/' + collection;
             var req = $.ajax({
                 url: url,
                 method: 'GET',
-                timeout: 20000,
-                contentType: 'application/json',
+                timeout: BaasBox.timeout,
                 dataType: 'json',
-                data: params,
-                success: function(res) {
-                    callback(res['data'], null);
-                },
-                error: function(e) {
-                    if (e.status === 0) { // TODO: is this the best way?
-                        e.responseText = "{'result':'error','message':'Server is probably down'}";
-                    }
-                    callback(null, e);
-                }
-            });
-
+                data: params
+            })
+              .done(function(res) {
+                deferred.resolve(res['data']);
+              })
+              .fail(function(error) {
+                deferred.reject(error);
+              })
+            return deferred.promise();
         },
 
-        loadCollection: function(collection, callback) {
+        loadCollection: function(collection) {
+            return BaasBox.loadCollectionWithParams(collection, {page: 0, recordsPerPage: BaasBox.pagelength});
+        },
 
-            BaasBox.loadCollectionWithParams(collection, {
-                page: 0,
-                recordsPerPage: BaasBox.pagelength
-            }, callback);
+        save: function(object, collection) {
+            var deferred = buildDeferred();
+            var method = 'POST';
+            var url = BaasBox.endPoint + '/document/' + collection;
+            if (object.id) {
+                method = 'PUT';
+                url = BaasBox.endPoint + '/document/' + collection + '/' + object.id;
+            }
+            json = JSON.stringify(object);
+            var req = $.ajax({
+                url: url,
+                type: method,
+                contentType: 'application/json',
+                dataType: 'json',
+                data: json
+            })
+              .done(function(res) {
+                deferred.resolve(res['data']);
+              })
+              .fail(function(error) {
+                deferred.reject(error);
+              })
+            return deferred.promise();
+        },
 
+        updateField: function(objectId, collection, fieldName, newValue) {
+            var deferred = buildDeferred();
+            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/.' + fieldName;
+            var json = JSON.stringify({
+                "data": newValue
+            });
+            var req = $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: json
+            })
+              .done(function(res) {
+                deferred.resolve(res['data']);
+              })
+              .fail(function(error) {
+                deferred.reject(error);
+              })
+            return deferred.promise();
+        },
+
+        delete: function(objectId, collection) {
+            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
+            return $.ajax({
+                url: url,
+                method: 'DELETE'
+            })
         },
 
         // only for json assets
-        loadAssetData: function(asset, callback) {
-
-            var url = BaasBox.endPoint + '/asset/' + asset + '/data';
+        loadAssetData: function(assetName) {
+            var deferred = buildDeferred();
+            var url = BaasBox.endPoint + '/asset/' + assetName + '/data';
             var req = $.ajax({
                 url: url,
                 method: 'GET',
                 contentType: 'application/json',
-                dataType: 'json',
-                success: function(res) {
-                    callback(res['data'], null);
-                },
-                error: function(e) {
-                    callback(null, JSON.parse(e.responseText));
-                }
-            });
-
+                dataType: 'json'
+            })
+              .done(function(res) {
+                deferred.resolve(res['data']);
+              })
+              .fail(function(error) {
+                deferred.reject(error);
+              })
+            return deferred.promise();
         },
 
-        isEmpty: function(ob) {
-            for (var i in ob) {
-                return false;
-            }
-            return true;
-        },
-
-        getImageURI: function(name, params, callback) {
-
+        getImageURI: function(name, params) {
+            var deferred = buildDeferred();
             var uri = BaasBox.endPoint + '/asset/' + name;
             var r;
-
             if (params === null || this.isEmpty(params)) {
-                callback({
-                    "data": uri + "?X-BAASBOX-APPCODE=" + BaasBox.appcode
-                }, null);
-                return;
+              return deferred.resolve({"data": uri + "?X-BAASBOX-APPCODE=" + BaasBox.appcode})
             }
-
             for (var prop in params) {
                 var a = [];
                 a.push(prop);
                 a.push(params[prop]);
                 r = a.join('/');
             }
-
             uri = uri.concat('/');
             uri = uri.concat(r);
-
             p = {};
             p['X-BAASBOX-APPCODE'] = BaasBox.appcode;
             var req = $.get(uri, p)
-                .done(function(res) {
-                    console.log("URI is ", this.url);
-                    callback({
-                        "data": this.url
-                    }, null);
-                })
-                .fail(function(e) {
-                    console.log("error in URI ", e);
-                    callback(null, JSON.parse(e.responseText));
-                });
-
-        },
-
-        save: function(object, collection, callback) {
-
-            var method = 'POST';
-            var url = BaasBox.endPoint + '/document/' + collection;
-
-            if (object.id) {
-                method = 'PUT';
-                url = BaasBox.endPoint + '/document/' + collection + '/' + object.id;
-            }
-
-            json = JSON.stringify(object);
-
-            var req = $.ajax({
-                url: url,
-                type: method,
-                contentType: 'application/json',
-                dataType: 'json',
-                data: json,
-                success: function(res) {
-                    callback(res['data'], null);
-                },
-                error: function(e) {
-                    callback(null, JSON.parse(e.responseText));
-                }
-            });
-
-        },
-
-        updateField: function(objectId, collection, field, newValue, callback) {
-
-            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/.' + field;
-            var json = JSON.stringify({
-                "data": newValue
-            });
-
-            var req = $.ajax({
-                url: url,
-                type: 'PUT',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: json,
-                success: function(res) {
-                    callback(res['data'], null);
-                },
-                error: function(e) {
-                    callback(null, e.responseText);
-                }
-            });
-
-        },
-
-        delete: function(objectId, collection, callback) {
-
-            url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
-
-            var req = $.ajax({
-                url: url,
-                method: 'DELETE',
-                success: function(res) {
-                    callback(res['data'], null);
-                },
-                error: function(e) {
-                    callback(null, JSON.parse(e.responseText));
-                }
-            });
-
+              .done(function(res) {
+                deferred.resolve({"data": this.url});
+              })
+              .fail(function(e) {
+                deferred.reject(error);
+              });
+            return deferred.promise();
         }
-
-
     };
-
 })();
