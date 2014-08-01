@@ -30,3 +30,6 @@ Version 0.8.1
 
 - Just a release number update to align this SDK with the other ones
 
+Version 0.8.2
+
+- Added promises
