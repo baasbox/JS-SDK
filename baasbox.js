@@ -460,6 +460,17 @@ var BaasBox = (function() {
 
       fetchUserProfile: function (username) {
         return $.get(BaasBox.endPoint + '/user/' + username)
+      },
+
+      fetchUsers: function (params) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/users',
+            method: 'GET',
+            dataType: 'json',
+            data: params
+        })
       }
+
+
     };
 })();
