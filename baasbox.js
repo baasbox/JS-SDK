@@ -122,17 +122,6 @@ var BaasBox = (function() {
     var endPoint;
     var COOKIE_KEY = "baasbox-cookie";
 
-    // permission constants
-    var READ_PERMISSION = "read";
-    var DELETE_PERMISSION = "delete";
-    var UPDATE_PERMISSION = "update";
-	  var ALL_PERMISSION = "all";
-
-    // role constants, by default in the BaasBox back end
-    var ANONYMOUS_ROLE = "anonymous";
-    var REGISTERED_ROLE = "registered";
-    var ADMINISTRATOR_ROLE = "administrator";
-
     // check if the user is using Zepto, otherwise the standard jQuery ajaxSetup function is executed
     if (window.Zepto) {
       $.ajaxSettings.global = true;
@@ -211,6 +200,16 @@ var BaasBox = (function() {
       pagelength: 50,
       timeout: 20000,
       version: "0.8.2",
+      // permission constants
+      READ_PERMISSION: "read",
+      DELETE_PERMISSION: "delete",
+      UPDATE_PERMISSION: "update",
+      ALL_PERMISSION: "all",
+
+    // role constants, by default in the BaasBox back end
+      ANONYMOUS_ROLE: "anonymous",
+      REGISTERED_ROLE: "registered",
+      ADMINISTRATOR_ROLE: "administrator",
 
       isEmpty: function(ob) {
           for (var i in ob) {
@@ -417,6 +416,20 @@ var BaasBox = (function() {
 
       fetchObjectsCount: function (collection) {
         return $.get(BaasBox.endPoint + '/document/' + collection + '/count');
+      },
+
+      grantAccessToUser: function (collection, objectId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/user/' + username,
+            method: 'PUT'
+        });
+      },
+
+      revokeAccessToUser: function (collection, objectId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/user/' + username,
+            method: 'DELETE'
+        });
       },
 
       // only for json assets
