@@ -264,7 +264,7 @@ var BaasBox = (function() {
           deferred.resolve(getCurrentUser());
         })
         .fail(function(error) {
-          deferred.reject(error)
+          deferred.reject(error);
         });
         return deferred.promise();
       },
@@ -412,7 +412,11 @@ var BaasBox = (function() {
         return $.ajax({
           url: BaasBox.endPoint + '/document/' + collection + '/' + objectId,
           method: 'DELETE'
-        })
+        });
+      },
+
+      fetchObjectsCount: function (collection) {
+        return $.get(BaasBox.endPoint + '/document/' + collection + '/count');
       },
 
       // only for json assets
@@ -470,7 +474,7 @@ var BaasBox = (function() {
             url: BaasBox.endPoint + '/users',
             method: 'GET',
             data: params
-        })
+        });
       },
 
       updateUserProfile: function (params) {
@@ -479,7 +483,7 @@ var BaasBox = (function() {
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(params)          
-        })
+        });
       },
 
       changePassword: function (oldPassword, newPassword) {
@@ -488,31 +492,31 @@ var BaasBox = (function() {
             method: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({old: oldPassword, new: newPassword})            
-        })
+        });
       },
 
       resetPassword: function() {
-        var user = getCurrentUser()
-        return $.get(BaasBox.endPoint + '/user/' + user.username + '/password/reset')
+        var user = getCurrentUser();
+        return $.get(BaasBox.endPoint + '/user/' + user.username + '/password/reset');
       },
 
       followUser: function (username) {
-        return $.post(BaasBox.endPoint + '/follow/' + username)
+        return $.post(BaasBox.endPoint + '/follow/' + username);
       },
 
       unfollowUser: function (username) {
         return $.ajax({
           url: BaasBox.endPoint + '/follow/' + username,
           method : 'DELETE'
-        })
+        });
       },
 
       fetchFollowers: function (username) {
-        return $.get(BaasBox.endPoint + '/followers/' + username)
+        return $.get(BaasBox.endPoint + '/followers/' + username);
       },
 
       fetchFollowing: function (username) {
-        return $.get(BaasBox.endPoint + '/following/' + username)
+        return $.get(BaasBox.endPoint + '/following/' + username);
       }
 
     };

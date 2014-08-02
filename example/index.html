@@ -252,6 +252,16 @@
 			  })
 		});
 
+		$("#fetchObjectsCount").click(function () {
+			BaasBox.fetchObjectsCount("test")
+			  .done(function(res) {
+			  	console.log("res ", res['data']['count']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 	});
 		
 	</script>
@@ -266,6 +276,7 @@
 	<a id="loadCollection" href="#">load collection</a> <br>
 	<a id="loadCollectionWithParams" href="#">load collection with params</a> <br>
 	<a id="loadObject" href="#">load object</a> <br>
+	<a id="fetchObjectsCount" href="#">fetch objects count</a> <br>
 	<a id="update" href="#">update field</a><br>
 	<a id="delete" href="#">delete object</a><br>
 	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
