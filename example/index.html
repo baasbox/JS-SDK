@@ -202,6 +202,26 @@
 			  })
 		});
 
+		$("#followUser").click(function () {
+			BaasBox.followUser("test2")
+			  .done(function(res) {
+			  	console.log("res ", res['data']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
+		$("#unfollowUser").click(function () {
+			BaasBox.unfollowUser("test2")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 	});
 		
 	</script>
@@ -225,5 +245,7 @@
 	<a id="updateUserProfile" href="#">update user profile</a><br>
 	<a id="changePassword" href="#">change password</a><br>
 	<a id="resetPassword" href="#">reset password</a><br>
+	<a id="followUser" href="#">follow user</a><br>
+	<a id="unfollowUser" href="#">unfollow user</a><br>
 </body>
 </htm>

@@ -491,6 +491,17 @@ var BaasBox = (function() {
       resetPassword: function() {
         var user = getCurrentUser()
         return $.get(BaasBox.endPoint + '/user/' + user.username + '/password/reset')
+      },
+
+      followUser: function (username) {
+        return $.post(BaasBox.endPoint + '/follow/' + username)
+      },
+
+      unfollowUser: function (username) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/follow/' + username,
+          method : 'DELETE'
+        })
       }
 
     };
