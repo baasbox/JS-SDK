@@ -456,6 +456,10 @@ var BaasBox = (function() {
             (error);
           });
         return deferred.promise();
+      },
+
+      fetchuserProfile: function (username) {
+        return $.get(BaasBox.endPoint + '/user/' + username)
       }
     };
 })();

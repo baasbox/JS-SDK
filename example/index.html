@@ -132,10 +132,20 @@
 			  })
 		});
 		
-		$("#loadImage").click(function () {
+		$("#getImageURI").click(function () {
 			BaasBox.getImageURI("testimage", {'resizeId' : 1})
 			  .done(function(res) {
 			  	console.log("image URI is ", res['data']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
+		$("#fetchUser").click(function () {
+			BaasBox.fetchuserProfile("test2")
+			  .done(function(res) {
+			  	console.log("res ", res['data']);
 			  })
 			  .fail(function(error) {
 			  	console.log("error ", error);
@@ -158,6 +168,7 @@
 	<a id="update" href="#">update field</a><br>
 	<a id="delete" href="#">delete</a><br>
 	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
-	<a id="loadImage" href="#">loadImage</a><br>
+	<a id="getImageURI" href="#">get image URI</a><br>
+	<a id="fetchUser" href="#">fetch user profile</a><br>
 </body>
 </htm>
