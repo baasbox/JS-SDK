@@ -172,6 +172,16 @@
 			  })
 		});
 
+		$("#updateUserProfile").click(function () {
+			BaasBox.updateUserProfile({"visibleByTheUser": {"address" : "Prince St, NY"}})
+			  .done(function(res) {
+			  	console.log("res ", res['data']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 	});
 		
 	</script>
@@ -192,5 +202,6 @@
 	<a id="fetchUser" href="#">fetch user profile</a><br>
 	<a id="fetchUsers" href="#">fetch users</a><br>
 	<a id="fetchUsersWithParams" href="#">fetch user list with params</a><br>
+	<a id="updateUserProfile" href="#">update user profile</a><br>
 </body>
 </htm>

@@ -466,11 +466,18 @@ var BaasBox = (function() {
         return $.ajax({
             url: BaasBox.endPoint + '/users',
             method: 'GET',
-            dataType: 'json',
             data: params
         })
-      }
+      },
 
+      updateUserProfile: function (params) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/me',
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(params),            
+        })
+      }
 
     };
 })();
