@@ -357,6 +357,10 @@ var BaasBox = (function() {
         return BaasBox.loadCollectionWithParams(collection, {page: 0, recordsPerPage: BaasBox.pagelength});
       },
 
+      loadObject: function (collection, objectId) {
+        return $.get(BaasBox.endPoint + '/document/' + collection + '/' + objectId)
+      },
+
       save: function(object, collection) {
         var deferred = buildDeferred();
         var method = 'POST';
@@ -405,9 +409,8 @@ var BaasBox = (function() {
       },
 
       delete: function(objectId, collection) {
-        url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
         return $.ajax({
-          url: url,
+          url: BaasBox.endPoint + '/document/' + collection + '/' + objectId,
           method: 'DELETE'
         })
       },

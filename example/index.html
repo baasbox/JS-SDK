@@ -73,6 +73,16 @@
 			  })
 		});
 
+		$("#loadObject").click(function() {
+			BaasBox.loadObject("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e")
+			  .done(function(res) {
+			  	console.log("res ", res['data']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+			});
+
 		$("#save").click(function () {
 			var o = new Object();
 			o.list = ["margherita", "capricciosa"];
@@ -255,8 +265,9 @@
 	<a id="save" href="#">save</a><br>
 	<a id="loadCollection" href="#">load collection</a> <br>
 	<a id="loadCollectionWithParams" href="#">load collection with params</a> <br>
+	<a id="loadObject" href="#">load object</a> <br>
 	<a id="update" href="#">update field</a><br>
-	<a id="delete" href="#">delete</a><br>
+	<a id="delete" href="#">delete object</a><br>
 	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
 	<a id="getImageURI" href="#">get image URI</a><br>
 	<a id="fetchUser" href="#">fetch user profile</a><br>
