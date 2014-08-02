@@ -486,6 +486,11 @@ var BaasBox = (function() {
             contentType: 'application/json',
             data: JSON.stringify({old: oldPassword, new: newPassword})            
         })
+      },
+
+      resetPassword: function() {
+        var user = getCurrentUser()
+        return $.get(BaasBox.endPoint + '/user/' + user.username + '/password/reset')
       }
 
     };
