@@ -36,7 +36,17 @@
 		$("#signup").click(function() {
 			BaasBox.signup("test", "test")
 				.done(function (res) {
-			  	console.log("outer singup ", res);
+			  	console.log("signup ", res);
+			  })
+			  .fail(function (error) {
+			  	console.log("error ", error);
+			  })
+		});
+
+		$("#signupWithParams").click(function() {
+			BaasBox.signup("test2", "test2", {"visibleByRegisteredUsers": {"email" : "test@test.com"}})
+				.done(function (res) {
+			  	console.log("signup ", res);
 			  })
 			  .fail(function (error) {
 			  	console.log("error ", error);
@@ -141,6 +151,7 @@
 	<a id="login" href="#">login</a> <br>
 	<a id="logout" href="#">logout</a><br>
 	<a id="signup" href="#">signup</a><br>
+	<a id="signupWithParams" href="#">signup with params</a><br>
 	<a id="save" href="#">save</a><br>
 	<a id="loadCollection" href="#">load collection</a> <br>
 	<a id="loadCollectionWithParams" href="#">load collection with params</a> <br>

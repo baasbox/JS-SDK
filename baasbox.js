@@ -292,14 +292,21 @@ var BaasBox = (function() {
         return deferred.promise();
       },
 
-      signup: function(user, pass) {
+      signup: function(user, pass, acl) {
         var deferred = buildDeferred();
         var url = BaasBox.endPoint + '/user';
+        var postData = {username: user, password: pass}
+        if (acl !== undefined || !this.isEmpty(acl)) {
+          var visibilityProperties = Object.getOwnPropertyNames(acl)
+          for (prop in acl) {
+            postData[prop] = acl[prop]
+          }
+        }
         var req = $.ajax({
           url: url,
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({username: user, password: pass})
+          data: JSON.stringify(postData)
         })
           .done(function (res) {
             var roles = [];
