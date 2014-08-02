@@ -452,8 +452,8 @@ var BaasBox = (function() {
           .done(function(res) {
             deferred.resolve({"data": this.url});
           })
-          .fail(function(e) {
-            deferred.reject(error);
+          .fail(function(error) {
+            (error);
           });
         return deferred.promise();
       }
