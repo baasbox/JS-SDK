@@ -502,6 +502,14 @@ var BaasBox = (function() {
           url: BaasBox.endPoint + '/follow/' + username,
           method : 'DELETE'
         })
+      },
+
+      fetchFollowers: function (username) {
+        return $.get(BaasBox.endPoint + '/followers/' + username)
+      },
+
+      fetchFollowing: function (username) {
+        return $.get(BaasBox.endPoint + '/following/' + username)
       }
 
     };
