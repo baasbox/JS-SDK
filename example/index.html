@@ -312,6 +312,16 @@
 			  })
 		});
 
+		$("#sendPush").click(function () {
+			BaasBox.sendPushNotification("test", "ciao")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 
 
 	});
@@ -347,7 +357,7 @@
 	<a id="unfollowUser" href="#">unfollow user</a><br>
 	<a id="fetchFollowers" href="#">fetch followers</a><br>
 	<a id="fetchFollowing" href="#">fetch following</a><br>
-	
+	<a id="sendPush" href="#">send push notification</a><br>
 	
 
 </body>

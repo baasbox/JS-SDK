@@ -544,6 +544,15 @@ var BaasBox = (function() {
 
       fetchFollowing: function (username) {
         return $.get(BaasBox.endPoint + '/following/' + username);
+      },
+
+      sendPushNotification: function(username, message) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/push/message/' + username, 
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({"message": message})  
+        })
       }
 
     };
