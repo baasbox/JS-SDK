@@ -475,7 +475,16 @@ var BaasBox = (function() {
             url: BaasBox.endPoint + '/me',
             method: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(params),            
+            data: JSON.stringify(params)          
+        })
+      },
+
+      changePassword: function (oldPassword, newPassword) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/me/password',
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({old: oldPassword, new: newPassword})            
         })
       }
 

@@ -182,6 +182,16 @@
 			  })
 		});
 
+		$("#changePassword").click(function () {
+			BaasBox.changePassword("test", "newtest")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 	});
 		
 	</script>
@@ -203,5 +213,6 @@
 	<a id="fetchUsers" href="#">fetch users</a><br>
 	<a id="fetchUsersWithParams" href="#">fetch user list with params</a><br>
 	<a id="updateUserProfile" href="#">update user profile</a><br>
+	<a id="changePassword" href="#">change password</a><br>
 </body>
 </htm>
