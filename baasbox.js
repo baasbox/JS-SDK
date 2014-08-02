@@ -458,7 +458,7 @@ var BaasBox = (function() {
         return deferred.promise();
       },
 
-      fetchuserProfile: function (username) {
+      fetchUserProfile: function (username) {
         return $.get(BaasBox.endPoint + '/user/' + username)
       }
     };
