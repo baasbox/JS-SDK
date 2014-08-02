@@ -292,7 +292,26 @@
 			  })
 		});
 
+		$("#grantAccessToRole").click(function () {
+			BaasBox.grantAccessToRole("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
 		
+		$("#revokeAccessToRole").click(function () {
+			BaasBox.revokeAccessToRole("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 
 
 	});
@@ -314,6 +333,8 @@
 	<a id="delete" href="#">delete object</a><br>
 	<a id="grantAccessToUser" href="#">grant access to user</a><br>
 	<a id="revokeAccessToUser" href="#">revoke access to user</a><br>
+	<a id="grantAccessToRole" href="#">grant access to role</a><br>
+	<a id="revokeAccessToRole" href="#">revoke access to role</a><br>
 	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
 	<a id="getImageURI" href="#">get image URI</a><br>
 	<a id="fetchUser" href="#">fetch user profile</a><br>
@@ -326,7 +347,8 @@
 	<a id="unfollowUser" href="#">unfollow user</a><br>
 	<a id="fetchFollowers" href="#">fetch followers</a><br>
 	<a id="fetchFollowing" href="#">fetch following</a><br>
-
+	
+	
 
 </body>
 </htm>

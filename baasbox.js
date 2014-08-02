@@ -432,6 +432,20 @@ var BaasBox = (function() {
         });
       },
 
+      grantAccessToRole: function (collection, objectId, permission, role) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/role/' + role,
+            method: 'PUT'
+        });
+      },
+
+      revokeAccessToRole: function (collection, objectId, permission, role) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/role/' + role,
+            method: 'DELETE'
+        });
+      },
+
       // only for json assets
       loadAssetData: function(assetName) {
         var deferred = buildDeferred();
