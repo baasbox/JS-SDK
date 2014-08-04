@@ -337,6 +337,10 @@ var BaasBox = (function() {
         return $.get(BaasBox.endPoint + '/me')
       },
 
+      createCollection: function(collection) {
+        return $.post(BaasBox.endPoint + '/admin/collection/' + collection)
+      },
+
       loadCollectionWithParams: function(collection, params) {
         var deferred = buildDeferred();
         var url = BaasBox.endPoint + '/document/' + collection;
