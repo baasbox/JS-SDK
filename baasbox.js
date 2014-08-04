@@ -341,6 +341,13 @@ var BaasBox = (function() {
         return $.post(BaasBox.endPoint + '/admin/collection/' + collection)
       },
 
+      deleteCollection: function(collection) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/admin/collection/' + collection,
+          method: 'DELETE'
+        })
+      },
+
       loadCollectionWithParams: function(collection, params) {
         var deferred = buildDeferred();
         var url = BaasBox.endPoint + '/document/' + collection;

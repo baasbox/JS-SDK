@@ -340,6 +340,15 @@
 			  })
 		});
 
+		$("#deleteCollection").click(function () {
+			BaasBox.deleteCollection("ciao")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
 
 	});
 		
@@ -354,6 +363,7 @@
 	<a id="fetchCurrentUser" href="#">fetch current user profile</a><br>
 	<a id="save" href="#">save</a><br>
 	<a id="createCollection" href="#">create a collection</a><br>
+	<a id="deleteCollection" href="#">delete a collection</a><br>
 	<a id="loadCollection" href="#">load collection</a> <br>
 	<a id="loadCollectionWithParams" href="#">load collection with params</a> <br>
 	<a id="loadObject" href="#">load object</a> <br>
