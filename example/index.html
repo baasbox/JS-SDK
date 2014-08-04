@@ -270,16 +270,6 @@
 			  })
 		});
 
-		$("#fetchObjectsCount").click(function () {
-			BaasBox.fetchObjectsCount("test")
-			  .done(function(res) {
-			  	console.log("res ", res['data']['count']);
-			  })
-			  .fail(function(error) {
-			  	console.log("error ", error);
-			  })
-		});
-
 		$("#grantAccessToUser").click(function () {
 			BaasBox.grantAccessToUser("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, "test2")
 			  .done(function(res) {
