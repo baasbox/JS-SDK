@@ -150,6 +150,16 @@
 			  })
 		});
 
+		$("#fetchCurrentUser").click(function () {
+			BaasBox.fetchCurrentUser()
+			  .done(function(res) {
+			  	console.log("res ", res['data']);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		});
+
 		$("#fetchUser").click(function () {
 			BaasBox.fetchUserProfile("test2")
 			  .done(function(res) {
@@ -332,6 +342,7 @@
 	<a id="logout" href="#">logout</a><br>
 	<a id="signup" href="#">signup</a><br>
 	<a id="signupWithParams" href="#">signup with params</a><br>
+	<a id="fetchCurrentUser" href="#">fetch current user profile</a><br>
 	<a id="save" href="#">save</a><br>
 	<a id="loadCollection" href="#">load collection</a> <br>
 	<a id="loadCollectionWithParams" href="#">load collection with params</a> <br>
@@ -356,7 +367,6 @@
 	<a id="fetchFollowers" href="#">fetch followers</a><br>
 	<a id="fetchFollowing" href="#">fetch following</a><br>
 	<a id="sendPush" href="#">send push notification</a><br>
-	
 
 </body>
 </htm>

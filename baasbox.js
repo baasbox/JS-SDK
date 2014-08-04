@@ -333,6 +333,10 @@ var BaasBox = (function() {
           return getCurrentUser();
       },
 
+      fetchCurrentUser: function () {
+        return $.get(BaasBox.endPoint + '/me')
+      },
+
       loadCollectionWithParams: function(collection, params) {
         var deferred = buildDeferred();
         var url = BaasBox.endPoint + '/document/' + collection;
