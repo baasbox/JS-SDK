@@ -357,6 +357,26 @@
 			$("#uploadForm").submit()
 		})
 
+		$("#fetchFile").click(function () {
+			BaasBox.fetchFile("0d7c2469-71e0-447b-a524-a8ecd0bf4a77")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		})
+
+		$("#deleteFile").click(function () {
+			BaasBox.deleteFile("0d7c2469-71e0-447b-a524-a8ecd0bf4a77")
+			  .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+		})
+
 
 	});
 		
@@ -395,6 +415,8 @@
 	<a id="fetchFollowers" href="#">fetch followers</a><br>
 	<a id="fetchFollowing" href="#">fetch following</a><br>
 	<a id="sendPush" href="#">send push notification</a><br>
+	<a id="fetchFile" href="#">fetch file</a><br>
+	<a id="deleteFile" href="#">delete file</a><br>
 
 	<form id="uploadForm">
     <input type="file" name="upload" /><br/>

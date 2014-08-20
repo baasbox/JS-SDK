@@ -580,6 +580,17 @@ var BaasBox = (function() {
           cache: false,
           processData:false       
         })
+      },
+
+      fetchFile: function(fileId) {
+        return $.get(BaasBox.endPoint + '/file/' + fileId)
+      },
+
+      deleteFile: function(fileId) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/file/' + fileId,
+          method : 'DELETE'
+        });
       }
 
     };
