@@ -340,6 +340,24 @@
 			  })
 		});
 
+		$("#uploadForm").submit(function(e) {
+      e.preventDefault();
+      var formObj = $(this);
+      var formData = new FormData(this);
+      BaasBox.uploadFile(formData)
+        .done(function(res) {
+			  	console.log("res ", res);
+			  })
+			  .fail(function(error) {
+			  	console.log("error ", error);
+			  })
+	  });
+
+		$("#sub").click(function() {
+			$("#uploadForm").submit()
+		})
+
+
 	});
 		
 	</script>
@@ -377,5 +395,11 @@
 	<a id="fetchFollowers" href="#">fetch followers</a><br>
 	<a id="fetchFollowing" href="#">fetch following</a><br>
 	<a id="sendPush" href="#">send push notification</a><br>
+
+	<form id="uploadForm">
+    <input type="file" name="upload" /><br/>
+  </form>
+  <button id="sub">Upload</button>
+
 </body>
 </htm>

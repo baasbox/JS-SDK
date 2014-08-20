@@ -199,14 +199,14 @@ var BaasBox = (function() {
       appcode: "",
       pagelength: 50,
       timeout: 20000,
-      version: "0.8.2",
+      version: "0.8.3",
       // permission constants
       READ_PERMISSION: "read",
       DELETE_PERMISSION: "delete",
       UPDATE_PERMISSION: "update",
       ALL_PERMISSION: "all",
 
-    // role constants, by default in the BaasBox back end
+      // role constants, by default in the BaasBox back end
       ANONYMOUS_ROLE: "anonymous",
       REGISTERED_ROLE: "registered",
       ADMINISTRATOR_ROLE: "administrator",
@@ -567,6 +567,18 @@ var BaasBox = (function() {
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({"message": message})  
+        })
+      },
+
+      uploadFile: function(formData) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/file',
+          type: 'POST',
+          data:  formData,
+          mimeType: "multipart/form-data",
+          contentType: false,
+          cache: false,
+          processData:false       
         })
       }
 
