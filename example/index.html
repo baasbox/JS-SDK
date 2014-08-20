@@ -117,7 +117,7 @@
 			    .done(function(res) {
 			  	  objectId = res[0].id;
 			  	  console.log("deleting object with id ", objectId)
-						BaasBox.delete(objectId, "test")
+						BaasBox.deleteObject(objectId, "test")
 						  .done(function(res) {
 						  	console.log("res ", res);
 						  })

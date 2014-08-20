@@ -422,7 +422,7 @@ var BaasBox = (function() {
         return deferred.promise();
       },
 
-      delete: function(objectId, collection) {
+      deleteObject: function(objectId, collection) {
         return $.ajax({
           url: BaasBox.endPoint + '/document/' + collection + '/' + objectId,
           method: 'DELETE'
