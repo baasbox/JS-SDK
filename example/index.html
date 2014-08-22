@@ -367,6 +367,16 @@
 			  })
 		})
 
+    $("#fetchFileDetails").click(function () {
+      BaasBox.fetchFileDetails("7491d26b-b730-40e7-9587-c0c3f58193c7")
+        .done(function(res) {
+          console.log("res ", res);
+        })
+        .fail(function(error) {
+          console.log("error ", error);
+        })
+    })
+
 		$("#deleteFile").click(function () {
 			BaasBox.deleteFile("0d7c2469-71e0-447b-a524-a8ecd0bf4a77")
 			  .done(function(res) {
@@ -458,6 +468,7 @@
 	<a id="fetchFollowing" href="#">fetch following</a><br>
 	<a id="sendPush" href="#">send push notification</a><br>
 	<a id="fetchFile" href="#">fetch file</a><br>
+  <a id="fetchFileDetails" href="#">fetch file details</a><br>
 	<a id="deleteFile" href="#">delete file</a><br>
 
 	<form id="uploadForm">

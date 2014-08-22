@@ -461,34 +461,6 @@ var BaasBox = (function() {
         });
       },
 
-      grantUserAccessToFile: function (fileId, permission, username) {
-        return $.ajax({
-            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
-            method: 'PUT'
-        });
-      },
-
-      revokeUserAccessToFile: function (fileId, permission, username) {
-        return $.ajax({
-            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
-            method: 'DELETE'
-        });
-      },
-
-      grantRoleAccessToFile: function (fileId, permission, rolename) {
-        return $.ajax({
-            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/role/' + rolename,
-            method: 'PUT'
-        });
-      },
-
-      revokeRoleAccessToFile: function (fileId, permission, rolename) {
-        return $.ajax({
-            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/role/' + rolename,
-            method: 'DELETE'
-        });
-      },
-
       // only for json assets
       loadAssetData: function(assetName) {
         var deferred = buildDeferred();
@@ -619,7 +591,39 @@ var BaasBox = (function() {
           url: BaasBox.endPoint + '/file/' + fileId,
           method : 'DELETE'
         });
-      }
+      },
+
+      fetchFileDetails: function(fileId) {
+        return $.get(BaasBox.endPoint + '/file/details/' + fileId)
+      },
+
+      grantUserAccessToFile: function (fileId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
+            method: 'PUT'
+        });
+      },
+
+      revokeUserAccessToFile: function (fileId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
+            method: 'DELETE'
+        });
+      },
+
+      grantRoleAccessToFile: function (fileId, permission, rolename) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/role/' + rolename,
+            method: 'PUT'
+        });
+      },
+
+      revokeRoleAccessToFile: function (fileId, permission, rolename) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/role/' + rolename,
+            method: 'DELETE'
+        });
+      },
 
     };
 })();
