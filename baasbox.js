@@ -461,6 +461,20 @@ var BaasBox = (function() {
         });
       },
 
+      grantUserAccessToFile: function (fileId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
+            method: 'PUT'
+        });
+      },
+
+      revokeUserAccessToFile: function (fileId, permission, username) {
+        return $.ajax({
+            url: BaasBox.endPoint + '/file/' + fileId + '/' + permission + '/user/' + username,
+            method: 'DELETE'
+        });
+      },
+
       // only for json assets
       loadAssetData: function(assetName) {
         var deferred = buildDeferred();

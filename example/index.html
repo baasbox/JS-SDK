@@ -377,6 +377,26 @@
 			  })
 		})
 
+    $("#grantUserAccessToFile").click(function () {
+      BaasBox.grantUserAccessToFile("7491d26b-b730-40e7-9587-c0c3f58193c7", BaasBox.READ_PERMISSION, "test2")
+        .done(function(res) {
+          console.log("res ", res);
+        })
+        .fail(function(error) {
+          console.log("error ", error);
+        })
+    })
+
+    $("#revokeUserAccessToFile").click(function () {
+      BaasBox.revokeUserAccessToFile("7491d26b-b730-40e7-9587-c0c3f58193c7", BaasBox.READ_PERMISSION, "test2")
+        .done(function(res) {
+          console.log("res ", res);
+        })
+        .fail(function(error) {
+          console.log("error ", error);
+        })
+    })
+
 
 	});
 		
@@ -419,9 +439,11 @@
 	<a id="deleteFile" href="#">delete file</a><br>
 
 	<form id="uploadForm">
-    <input type="file" name="upload" /><br/>
+    	<input type="file" name="upload" /><br/>
   </form>
-  <button id="sub">Upload</button>
+  <button id="sub">Upload</button><br/>
+  <a id="grantUserAccessToFile" href="#">grant user access to file</a><br>
+  <a id="revokeUserAccessToFile" href="#">revoke user access to file</a><br>
 
 </body>
 </htm>
