@@ -397,6 +397,28 @@
         })
     })
 
+    $("#grantRoleAccessToFile").click(function () {
+      BaasBox.grantRoleAccessToFile("7491d26b-b730-40e7-9587-c0c3f58193c7", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+        .done(function(res) {
+          console.log("res ", res);
+        })
+        .fail(function(error) {
+          console.log("error ", error);
+        })
+    })
+
+    $("#revokeRoleAccessToFile").click(function () {
+      BaasBox.revokeRoleAccessToFile("7491d26b-b730-40e7-9587-c0c3f58193c7", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+        .done(function(res) {
+          console.log("res ", res);
+        })
+        .fail(function(error) {
+          console.log("error ", error);
+        })
+    })
+
+
+
 
 	});
 		
@@ -444,6 +466,9 @@
   <button id="sub">Upload</button><br/>
   <a id="grantUserAccessToFile" href="#">grant user access to file</a><br>
   <a id="revokeUserAccessToFile" href="#">revoke user access to file</a><br>
+  <a id="grantRoleAccessToFile" href="#">grant role access to file</a><br>
+  <a id="revokeRoleAccessToFile" href="#">revoke role access to file</a><br>
+
 
 </body>
 </htm>
