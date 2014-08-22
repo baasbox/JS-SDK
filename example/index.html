@@ -270,8 +270,8 @@
 			  })
 		});
 
-		$("#grantAccessToUser").click(function () {
-			BaasBox.grantAccessToUser("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, "test2")
+		$("#grantUserAccessToObject").click(function () {
+			BaasBox.grantUserAccessToObject("test", "7a3ed177-f4e8-46ad-b857-75886228cc13", BaasBox.READ_PERMISSION, "test2")
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -280,8 +280,8 @@
 			  })
 		});
 
-		$("#revokeAccessToUser").click(function () {
-			BaasBox.revokeAccessToUser("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.ALL_PERMISSION, "test2")
+		$("#revokeUserAccessToObject").click(function () {
+			BaasBox.revokeUserAccessToObject("test", "7a3ed177-f4e8-46ad-b857-75886228cc13", BaasBox.ALL_PERMISSION, "test2")
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -290,8 +290,8 @@
 			  })
 		});
 
-		$("#grantAccessToRole").click(function () {
-			BaasBox.grantAccessToRole("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+		$("#grantRoleAccessToObject").click(function () {
+			BaasBox.grantRoleAccessToObject("test", "7a3ed177-f4e8-46ad-b857-75886228cc13", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -300,8 +300,8 @@
 			  })
 		});
 		
-		$("#revokeAccessToRole").click(function () {
-			BaasBox.revokeAccessToRole("test", "9e2921b0-cb60-4fc6-aa9b-28f4a8df4f0e", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
+		$("#revokeRoleAccessToObject").click(function () {
+			BaasBox.revokeRoleAccessToObject("test", "7a3ed177-f4e8-46ad-b857-75886228cc13", BaasBox.READ_PERMISSION, BaasBox.REGISTERED_ROLE)
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -398,10 +398,10 @@
 	<a id="fetchObjectsCount" href="#">fetch objects count</a> <br>
 	<a id="update" href="#">update field</a><br>
 	<a id="delete" href="#">delete object</a><br>
-	<a id="grantAccessToUser" href="#">grant access to user</a><br>
-	<a id="revokeAccessToUser" href="#">revoke access to user</a><br>
-	<a id="grantAccessToRole" href="#">grant access to role</a><br>
-	<a id="revokeAccessToRole" href="#">revoke access to role</a><br>
+	<a id="grantUserAccessToObject" href="#">grant access to user</a><br>
+	<a id="revokeUserAccessToObject" href="#">revoke access to user</a><br>
+	<a id="grantRoleAccessToObject" href="#">grant access to role</a><br>
+	<a id="revokeRoleAccessToObject" href="#">revoke access to role</a><br>
 	<a id="loadJSONAsset" href="#">load JSON asset</a> <br>
 	<a id="getImageURI" href="#">get image URI</a><br>
 	<a id="fetchUser" href="#">fetch user profile</a><br>

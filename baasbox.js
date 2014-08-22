@@ -433,28 +433,28 @@ var BaasBox = (function() {
         return $.get(BaasBox.endPoint + '/document/' + collection + '/count');
       },
 
-      grantAccessToUser: function (collection, objectId, permission, username) {
+      grantUserAccessToObject: function (collection, objectId, permission, username) {
         return $.ajax({
             url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/user/' + username,
             method: 'PUT'
         });
       },
 
-      revokeAccessToUser: function (collection, objectId, permission, username) {
+      revokeUserAccessToObject: function (collection, objectId, permission, username) {
         return $.ajax({
             url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/user/' + username,
             method: 'DELETE'
         });
       },
 
-      grantAccessToRole: function (collection, objectId, permission, role) {
+      grantRoleAccessToObject: function (collection, objectId, permission, role) {
         return $.ajax({
             url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/role/' + role,
             method: 'PUT'
         });
       },
 
-      revokeAccessToRole: function (collection, objectId, permission, role) {
+      revokeRoleAccessToObject: function (collection, objectId, permission, role) {
         return $.ajax({
             url: BaasBox.endPoint + '/document/' + collection + '/' + objectId + '/' + permission + '/role/' + role,
             method: 'DELETE'
