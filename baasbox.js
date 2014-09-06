@@ -1,5 +1,5 @@
 /*!
- * BaasBox SDK 0.8.3
+ * BaasBox SDK 0.8.4
  * https://github.com/baasbox/JS-SDK
  *
  * Released under the Apache license
@@ -89,7 +89,7 @@ var BaasBox = (function() {
       appcode: "",
       pagelength: 50,
       timeout: 20000,
-      version: "0.8.3",
+      version: "0.8.4",
       // permission constants
       READ_PERMISSION: "read",
       DELETE_PERMISSION: "delete",
@@ -473,7 +473,7 @@ var BaasBox = (function() {
       },
 
       fetchFile: function(fileId) {
-        return $.get(BaasBox.endPoint + '/file/' + fileId)
+        return $.get(BaasBox.endPoint + '/file/' + fileId + "?X-BB-SESSION=" + BaasBox.getCurrentUser().token)
       },
 
       deleteFile: function(fileId) {
