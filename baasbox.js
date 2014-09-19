@@ -89,7 +89,7 @@ var BaasBox = (function() {
       appcode: "",
       pagelength: 50,
       timeout: 20000,
-      version: "0.8.4",
+      version: "0.9.0",
       // permission constants
       READ_PERMISSION: "read",
       DELETE_PERMISSION: "delete",
@@ -450,13 +450,22 @@ var BaasBox = (function() {
       fetchFollowing: function (username) {
         return $.get(BaasBox.endPoint + '/following/' + username);
       },
-
-      sendPushNotification: function(username, message) {
+	  
+      sendPushNotification: function(username, message) { // WARNING: Will be deprecated. User the one below
         return $.ajax({
           url: BaasBox.endPoint + '/push/message/' + username, 
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({"message": message})  
+        })
+      },
+
+	  sendPushNotification: function(params) {
+        return $.ajax({
+          url: BaasBox.endPoint + '/push/message', 
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(params)  
         })
       },
 

@@ -12,7 +12,7 @@
 		BaasBox.appcode = "1234567890";
 	
 		$("#login").click(function() {
-			BaasBox.login("test", "test")
+			BaasBox.login("bbb", "bbb")
 				.done(function (user) {
 					console.log("Logged in ", user);
 				})
@@ -62,7 +62,7 @@
 		});
 
 		$("#loadCollectionWithParams").click(function() {
-			BaasBox.loadCollectionWithParams("test", {page: 0, recordsPerPage: BaasBox.pagelength})
+			BaasBox.loadCollectionWithParams("test", {where: "color='red'"})
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -311,7 +311,15 @@
 		});
 
 		$("#sendPush").click(function () {
-			BaasBox.sendPushNotification("test", "ciao")
+		  // OLD way, will be deprecated
+      // BaasBox.sendPushNotification("aaa", "ciao")
+      //   .done(function(res) {
+      //    console.log("res ", res);
+      //   })
+      //   .fail(function(error) {
+      //    console.log("error ", error);
+      //   })
+      BaasBox.sendPushNotification({"message" : "hi there", "users" : ["cesare", "claudio"], "badge" : 1, "sound" : "test.aiff"})
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
