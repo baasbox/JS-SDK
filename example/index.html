@@ -319,7 +319,9 @@
       //   .fail(function(error) {
       //    console.log("error ", error);
       //   })
-      BaasBox.sendPushNotification({"message" : "hi there", "users" : ["cesare", "claudio"], "badge" : 1, "sound" : "test.aiff"})
+      
+      // Assumes the app has been compiled with a sound file named 'sound.aiff' in the bundle
+      BaasBox.sendPushNotification({"message" : "hi there", "users" : ["john", "jane"], "badge" : 1, "sound" : "sound.aiff"})
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
