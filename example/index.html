@@ -271,7 +271,7 @@
 		});
 
 		$("#grantUserAccessToObject").click(function () {
-			BaasBox.grantUserAccessToObject("test", "7a3ed177-f4e8-46ad-b857-75886228cc13", BaasBox.READ_PERMISSION, "test2")
+			BaasBox.grantUserAccessToObject("test", "f5136a59-83a6-4506-b25d-a0a2ab7d12a7", BaasBox.READ_PERMISSION, "test2")
 			  .done(function(res) {
 			  	console.log("res ", res);
 			  })
@@ -311,15 +311,6 @@
 		});
 
 		$("#sendPush").click(function () {
-		  // OLD way, will be deprecated
-      // BaasBox.sendPushNotification("aaa", "ciao")
-      //   .done(function(res) {
-      //    console.log("res ", res);
-      //   })
-      //   .fail(function(error) {
-      //    console.log("error ", error);
-      //   })
-      
       // Assumes the app has been compiled with a sound file named 'sound.aiff' in the bundle
       BaasBox.sendPushNotification({"message" : "hi there", "users" : ["john", "jane"], "badge" : 1, "sound" : "sound.aiff"})
 			  .done(function(res) {
@@ -437,9 +428,6 @@
         })
     })
 
-
-
-
 	});
 		
 	</script>
@@ -489,7 +477,5 @@
   <a id="revokeUserAccessToFile" href="#">revoke user access to file</a><br>
   <a id="grantRoleAccessToFile" href="#">grant role access to file</a><br>
   <a id="revokeRoleAccessToFile" href="#">revoke role access to file</a><br>
-
-
 </body>
 </htm>
