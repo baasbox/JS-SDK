@@ -37,3 +37,7 @@ Version 0.8.2
 Version 0.8.3
 
 - Added APIs to grant/revoke permissions
+
+Version 0.8.4
+- Removed deprecated method for push notifications
+
