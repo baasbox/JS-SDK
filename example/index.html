@@ -428,6 +428,30 @@
         })
     })
 
+    // Assumes this plugin is installed on the server: https://gist.github.com/funkyboy/ecc754dbe0f89e4a4c56
+    $("#pluginGET").click(function () {
+  		var url = BaasBox.endPoint + '/plugin/geo.bb';
+	    var req = $.get(url, {"ip" : "8.8.8.8"})
+	      .done(function (res) {
+	      	console.log("res is ", res.data);
+	      })
+	      .fail(function (error) {
+	          console.log("error = ", error);
+	       })
+    })
+
+    // Assumes this plugin is installed on the server: https://gist.github.com/funkyboy/ad3b25dfdbd53e27324f
+    $("#pluginPOST").click(function () {
+      var url = BaasBox.endPoint + '/plugin/addcar.bb';
+      var req = $.post(url, {"name" : "ferrari"})
+        .done(function (res) {
+          console.log("res is ", res.data);
+        })
+        .fail(function (error) {
+            console.log("error = ", error);
+        })
+    })
+
 	});
 		
 	</script>
@@ -477,5 +501,7 @@
   <a id="revokeUserAccessToFile" href="#">revoke user access to file</a><br>
   <a id="grantRoleAccessToFile" href="#">grant role access to file</a><br>
   <a id="revokeRoleAccessToFile" href="#">revoke role access to file</a><br>
+  <a id="pluginGET" href="#">plugin GET</a><br>
+  <a id="pluginPOST" href="#">plugin POST</a><br>
 </body>
 </htm>
