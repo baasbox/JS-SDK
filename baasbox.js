@@ -1,5 +1,5 @@
 /*!
- * BaasBox SDK 0.8.4
+ * BaasBox SDK 0.9.4
  * https://github.com/baasbox/JS-SDK
  *
  * Released under the Apache license
@@ -89,7 +89,7 @@ var BaasBox = (function() {
       appcode: "",
       pagelength: 50,
       timeout: 20000,
-      version: "0.9.0",
+      version: "0.9.4",
       // permission constants
       READ_PERMISSION: "read",
       DELETE_PERMISSION: "delete",
@@ -304,6 +304,25 @@ var BaasBox = (function() {
           data: json
         })
           .done(function(res) {
+            deferred.resolve(res['data']);
+          })
+          .fail(function(error) {
+            deferred.reject(error);
+          })
+        return deferred.promise();
+      },
+
+      updateObject: function(objectId, collection, newData) {
+        var deferred = buildDeferred();
+        url = BaasBox.endPoint + '/document/' + collection + '/' + objectId;
+        var req = $.ajax({
+          url: url,
+          type: 'PUT',
+          contentType: 'application/json',
+          dataType: 'json',
+          data: JSON.stringify(newData)
+        })
+         .done(function(res) {
             deferred.resolve(res['data']);
           })
           .fail(function(error) {
