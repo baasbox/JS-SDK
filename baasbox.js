@@ -142,13 +142,7 @@ var BaasBox = (function() {
               roles.push(r.name);
           });
           setCurrentUser({
-            //"username": res.data.user.name,
             "token": res.data['X-BB-SESSION'],
-            //"roles": roles,
-            //"visibleByAnonymousUsers": res.data["visibleByAnonymousUsers"],
-            //"visibleByTheUser": res.data["visibleByTheUser"],
-            //"visibleByFriends": res.data["visibleByFriends"],
-            //"visibleByRegisteredUsers": res.data["visibleByRegisteredUsers"],
           });
           deferred.resolve(getCurrentUser());
         })
@@ -203,13 +197,7 @@ var BaasBox = (function() {
               roles.push(r.name);
             });
             setCurrentUser({
-              //"username": res.data.user.name,
               "token": res.data['X-BB-SESSION'],
-              //"roles": roles,
-              //"visibleByAnonymousUsers": res.data["visibleByAnonymousUsers"],
-              //"visibleByTheUser": res.data["visibleByTheUser"],
-              //"visibleByFriends": res.data["visibleByFriends"],
-              //"visibleByRegisteredUsers": res.data["visibleByRegisteredUsers"],
             });
             deferred.resolve(getCurrentUser());
           })
