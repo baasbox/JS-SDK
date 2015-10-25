@@ -534,6 +534,25 @@ var BaasBox = (function() {
         });
       },
 
+      /* API for calling a plugin with params */
+      callPlugin: function(pluginName, method, data) {
+        var deferred = buildDeferred();
+        var req = $.ajax({
+          url: BaasBox.endPoint + '/plugin/'+pluginName,
+          method: method.toLowerCase(),
+          data:  JSON.stringify(data),
+          contentType: 'application/json',
+          dataType: 'json'     
+        })
+          .done(function (res) {
+            deferred.resolve(res);
+          })
+          .fail(function (error) {
+            deferred.reject(error)
+          });
+        return deferred.promise();
+      },
+
     };
 })();
 
