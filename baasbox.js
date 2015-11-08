@@ -174,6 +174,9 @@ var BaasBox = (function() {
           .fail(function (error) {
               deferred.reject(error)
            })
+        })
+        .fail(function(error) {
+          deferred.reject(error);
         });
         return deferred.promise();
       },
