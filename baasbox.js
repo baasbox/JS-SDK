@@ -39,9 +39,6 @@ var BaasBox = (function() {
     }
 
     function setCurrentUser(userObject) {
-      if (userObject === null) {
-        return;
-      }
       this.user = userObject;
       // if the user is using Zepto, then local storage must be used (if supported by the current browser)
       if (window.Zepto && window.localStorage) {
@@ -177,6 +174,9 @@ var BaasBox = (function() {
           .fail(function (error) {
               deferred.reject(error)
            })
+        })
+        .fail(function(error) {
+          deferred.reject(error);
         });
         return deferred.promise();
       },
