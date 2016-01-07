@@ -1,0 +1,27 @@
+{
+  "name": "baasbox",
+  "title": "BaasBox",
+  "description": "JavaScript library for BaasBox",
+  "version": "0.8.4",
+  "main": "baasbox.js",
+  "homepage": "http://www.baasbox.com",
+  "author": {
+    "name": "BaasBox and other contributors",
+    "url": "http://www.baasbox.com/team/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baasbox/JS-SDK.git"
+  },
+  "keywords": [
+    "baasbox"
+  ],
+  "bugs": {
+    "url": "https://github.com/baasbox/JS-SDK/issues"
+  },
+  "license": "Apache",
+  "dependencies": {
+	"jquery": "1.9.1"
+  },
+  "devDependencies": {}
+}
