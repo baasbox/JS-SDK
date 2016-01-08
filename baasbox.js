@@ -552,7 +552,45 @@ var BaasBox = (function() {
           });
         return deferred.promise();
       },
-
+        /* LINK API */
+        insertLink: function (outID, label, inID) {
+            var deferred = buildDeferred();
+            var req = $.ajax({
+                url: BaasBox.endPoint + '/link/' + outID + '/' + label + '/' + inID,
+                method: 'POST'
+            })
+                    .done(function (res) {
+                        deferred.resolve(res);
+                    })
+                    .fail(function (error) {
+                        deferred.reject(error);
+                    });
+            return deferred.promise();
+        },
+        fetchLinks: function (params) {
+            var deferred = buildDeferred();
+            var url = BaasBox.endPoint + '/link';
+            var req = $.ajax({
+                url: url,
+                method: 'GET',
+                timeout: BaasBox.timeout,
+                dataType: 'json',
+                data: params
+            })
+                    .done(function (res) {
+                        deferred.resolve(res['data']);
+                    })
+                    .fail(function (error) {
+                        deferred.reject(error);
+                    });
+            return deferred.promise();
+        },
+        deleteLink: function (linkid) {
+            return $.ajax({
+                url: BaasBox.endPoint + '/link/' + linkid,
+                method: 'DELETE'
+            });
+        }
     };
 })();
 
